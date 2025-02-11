@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 const http =require('http');
 require("dotenv").config();
+// console.log(process.env);
 
 
 console.log(process.env.URL_MONGO); 
@@ -18,6 +19,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var osRouter = require('./routes/osRouter');
 var contactRoutes = require('./routes/contactRoutes');
+var authRouter  = require('./routes/authRouter');
+var  touristeRouter = require('./routes/touristeRouter');
+
 
 var app = express();
 
@@ -31,22 +35,35 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/os', osRouter);
 app.use('/apicontact', contactRoutes);
+app.use('/apiauth', authRouter);
+app.use('/apitouriste', touristeRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
+
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-
-  res.status(err.status || 500);
-  res.render('error');
+  // Si c'est une API, renvoie une réponse JSON
+  res.status(err.status || 500).json({
+    message: err.message,
+    error: req.app.get('env') === 'development' ? err : {}
+  });
 });
+
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+//   // render the error page
+
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 const server = http.createServer(app);
 server.listen(process.env.PORT,()=>{connectToMongoDB(),console.log("🚀App is runnig on port 5000🚀")});
