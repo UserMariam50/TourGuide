@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('./User');  
+const User = require('./userSchema');  
 // Importer le modèle de base User
 
 const touristeSchema = new mongoose.Schema({

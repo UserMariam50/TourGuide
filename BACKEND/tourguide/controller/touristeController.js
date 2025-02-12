@@ -1,19 +1,18 @@
-const User = require("../models/userSchema");
+// controllers/touristeController.js
+const Touriste = require('../models/touristeSchema');
 
-// 🔹 Obtenir tous les touristes
 exports.getAllTouristes = async (req, res) => {
   try {
-    const tourists = await User.find({ role: "touriste" }).select("-password");
-    res.status(200).json(tourists);
+    const touristes = await Touriste.find().select('-password');
+    res.status(200).json(touristes);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// 🔹 Obtenir un touriste par ID
 exports.getTouristeById = async (req, res) => {
   try {
-    const touriste = await User.findOne({ _id: req.params.id, role: "touriste" }).select("-password");
+    const touriste = await Touriste.findOne({ _id: req.params.id }).select('-password');
     if (!touriste) return res.status(404).json({ message: "Touriste non trouvé !" });
 
     res.status(200).json(touriste);
@@ -22,17 +21,17 @@ exports.getTouristeById = async (req, res) => {
   }
 };
 
-// 🔹 Mettre à jour un touriste
 exports.updateTouriste = async (req, res) => {
   try {
-    const { username, email, image_user } = req.body;
+    const { username, email, image_user, preferredDestination } = req.body;
 
-    let touriste = await User.findOne({ _id: req.params.id, role: "touriste" });
+    let touriste = await Touriste.findOne({ _id: req.params.id });
     if (!touriste) return res.status(404).json({ message: "Touriste non trouvé !" });
 
     touriste.username = username || touriste.username;
     touriste.email = email || touriste.email;
     touriste.image_user = image_user || touriste.image_user;
+    touriste.preferredDestination = preferredDestination || touriste.favoriteDestinations;
 
     await touriste.save();
     res.status(200).json({ message: "Touriste mis à jour avec succès !" });
@@ -41,10 +40,9 @@ exports.updateTouriste = async (req, res) => {
   }
 };
 
-// 🔹 Supprimer un touriste
 exports.deleteTouriste = async (req, res) => {
   try {
-    const touriste = await User.findOneAndDelete({ _id: req.params.id, role: "touriste" });
+    const touriste = await Touriste.findOneAndDelete({ _id: req.params.id });
     if (!touriste) return res.status(404).json({ message: "Touriste non trouvé !" });
 
     res.status(200).json({ message: "Touriste supprimé avec succès !" });
@@ -53,30 +51,27 @@ exports.deleteTouriste = async (req, res) => {
   }
 };
 
-
 exports.createTouriste = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, image_user, preferredDestination } = req.body;
 
-    // Vérifier si l'email existe déjà
-    const existingUser = await User.findOne({ email });
+    const existingUser = await Touriste.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "Email déjà utilisé" });
 
-    // Créer un nouvel utilisateur avec le rôle 'touriste'
-    const user = new User({
+    const touriste = new Touriste({
       username,
       email,
       password,
-      role: 'touriste' // Le rôle est défini ici
+      image_user,
+      preferredDestination,
+      role: 'touriste', // Rôle spécifique
     });
 
-    // Sauvegarder l'utilisateur
-    await user.save();
+    await touriste.save();
 
-    // Générer un token pour l'utilisateur créé
-    const token = user.generateAuthToken();
+    const token = touriste.generateAuthToken(); // Méthode héritée de User
 
-    res.status(201).json({ token, user });
+    res.status(201).json({ token, touriste });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
