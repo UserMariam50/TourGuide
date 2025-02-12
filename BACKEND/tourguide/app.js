@@ -21,6 +21,7 @@ var osRouter = require('./routes/osRouter');
 var contactRoutes = require('./routes/contactRoutes');
 var authRouter  = require('./routes/authRouter');
 var  touristeRouter = require('./routes/touristeRouter');
+var  guideRouter = require('./routes/guideRouter');
 
 
 var app = express();
@@ -37,6 +38,7 @@ app.use('/os', osRouter);
 app.use('/apicontact', contactRoutes);
 app.use('/apiauth', authRouter);
 app.use('/apitouriste', touristeRouter);
+app.use('/apiguide', guideRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

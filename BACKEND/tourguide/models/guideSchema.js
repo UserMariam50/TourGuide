@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const User = require('./User');  // Importer le modèle de base User
-const Tour = require('./Tour');  
-const Ressource = require('./Ressource');  
-const Contact = require('./Contact');  
-const Partenaire = require('./Partenaire');
+const User = require('./userSchema');  // Importer le modèle de base User
+const Tour = require('./tourSchema');  // Importer le modèle de base Tour
+const Ressource = require('./ressourceSchema');  
+const Contact = require('./contactSchema');  
+const Partenaire = require('./partenaireSchema');
 
 const guideSchema = new mongoose.Schema({// Liste des tours anciens (référence vers le modèle Tour)
     oldTours: [{
