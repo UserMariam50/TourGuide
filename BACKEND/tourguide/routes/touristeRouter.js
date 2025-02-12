@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 const touristeController = require("../controller/touristeController");
 
+const { authMiddleware } = require('../middlewares/authMiddleware');
+const { checkRole } = require('../middlewares/checkRole');
+
+
 // Routes CRUD pour les touristes
-router.get("/getAllTouristes", touristeController.getAllTouristes);
+router.get("/getAllTouristes", authMiddleware,touristeController.getAllTouristes);
 router.get("/getTouristeById/:id", touristeController.getTouristeById);
 router.post("/createTouriste", touristeController.createTouriste);
 

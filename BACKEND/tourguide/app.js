@@ -66,4 +66,6 @@ app.use(function(err, req, res, next) {
 // });
 
 const server = http.createServer(app);
-server.listen(process.env.PORT,()=>{connectToMongoDB(),console.log("🚀App is runnig on port 5000🚀")});
+server.listen(process.env.PORT,()=>{
+  connectToMongoDB(),console.log("🚀App is runnig on port 5000🚀")
+});

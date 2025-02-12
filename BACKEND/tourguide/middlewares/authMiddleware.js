@@ -4,8 +4,8 @@ exports.authMiddleware = (req, res, next) => {
   console.log('Headers:', req.headers);
 
   // Récupérer le token de l'en-tête 'Authorization'
-  // const token = req.header('Authorization')?.split(' ')[1];
-  // console.log('Token:', token);
+  const token = req.headers['authorization']?.split(' ')[1]; 
+  console.log('Token:', token);
   // Si pas de token
   if (!token) {
     return res.status(401).json({ message: "Accès non autorisé, token manquant" });
