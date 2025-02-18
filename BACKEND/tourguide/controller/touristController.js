@@ -1,5 +1,5 @@
 // controllers/touristeController.js
-const Touriste = require('../models/touristeSchema');
+const Touriste = require('../models/touristSchema');
 
 exports.getAllTouristes = async (req, res) => {
   try {

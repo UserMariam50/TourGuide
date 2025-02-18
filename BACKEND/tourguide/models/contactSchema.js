@@ -18,7 +18,7 @@ const contactSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'guide', 'tourist'], 
+    enum: ['admin', 'guide', 'tourist','other'], 
     required: true
   },
   createdBy: { 

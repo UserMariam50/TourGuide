@@ -20,7 +20,7 @@ var usersRouter = require('./routes/users');
 var osRouter = require('./routes/osRouter');
 var contactRoutes = require('./routes/contactRoutes');
 var authRouter  = require('./routes/authRouter');
-var  touristeRouter = require('./routes/touristeRouter');
+var  touristRouter = require('./routes/touristRouter');
 var  guideRouter = require('./routes/guideRouter');
 
 
@@ -37,7 +37,7 @@ app.use('/users', usersRouter);
 app.use('/os', osRouter);
 app.use('/apicontact', contactRoutes);
 app.use('/apiauth', authRouter);
-app.use('/apitouriste', touristeRouter);
+app.use('/apitourist', touristRouter);
 app.use('/apiguide', guideRouter);
 
 // catch 404 and forward to error handler

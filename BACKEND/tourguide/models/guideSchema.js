@@ -1,17 +1,45 @@
 const mongoose = require('mongoose');
 const User = require('./userSchema');  // Importer le modèle de base User
 const Tour = require('./tourSchema');  // Importer le modèle de base Tour
-const Ressource = require('./ressourceSchema');  
+const Resource = require('./resourceSchema');  
 const Contact = require('./contactSchema');  
-const Partenaire = require('./partenaireSchema');
+const partner = require('./partnerSchema');
 
-const guideSchema = new mongoose.Schema({// Liste des tours anciens (référence vers le modèle Tour)
+const guideSchema = new mongoose.Schema({// Liste des tours anciens 
     oldTours: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Tour'
     }],
+    tourState: {
+      type: String,
+      enum: ['active', 'inactive']
+    },
+    coveredArea: {
+      type:[String]
+    },
+    gender: {
+      type:String
+    },
+    yearsOfExperience: {
+      type:Number
+    },
+    certifications: {
+      type:String,
+    },
+    spokenLanguages: {
+      type: [String],
+    },
+    instagramProfile: {
+      type: String,
+    },
+    personalDescription: {
+      type: String,
+    },
+    Nationality: {
+      type: String,
+    },
     // Nombre de tours
-    nbTours: {
+    numberOfTours: {
       type: Number,
       default: 0
     },
@@ -20,7 +48,7 @@ const guideSchema = new mongoose.Schema({// Liste des tours anciens (référence
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Ressource'
     }],
-    // Liste des contacts )
+    // Liste des contacts 
     contacts: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Contact'
@@ -28,14 +56,14 @@ const guideSchema = new mongoose.Schema({// Liste des tours anciens (référence
     // Liste des partenaires 
     partners: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Partenaire'
+      ref: 'partner'
     }],
-    // Nouveau tour 
+    // Nouveau tour a vérifier
     newTour: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Tour'
     }
 });
 
-const Guide = User.discriminator('Guide', guideSchema); // Discriminateur pour Guide
+const Guide = User.discriminator('Guide', guideSchema); //Héritage via Discriminateur pour Guide
 module.exports = Guide;
