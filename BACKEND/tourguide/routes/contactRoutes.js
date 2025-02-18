@@ -5,15 +5,31 @@ const contactController = require('../controller/contactController');
 const { authMiddleware } = require('../middlewares/authMiddleware');
 const { checkRole } = require('../middlewares/checkRole');
 
-// Seuls les guides peuvent créer, modifier ou supprimer des contacts
-router.post('/contacts', authMiddleware, checkRole(['guide']), contactController.createContact);
-router.put('/contacts/:id', authMiddleware, checkRole(['guide']), contactController.updateContact);
-router.delete('/contacts/:id', authMiddleware, checkRole(['guide']), contactController.deleteContact);
+
+// Créer un contact (accessible uniquement aux guides)
+router.post('/createContact', authMiddleware, checkRole(['guide']), contactController.createContact);
+
+// Mettre à jour un contact (accessible uniquement aux guides)
+router.put('/updateContact/:id', authMiddleware, checkRole(['guide']), contactController.updateContact);
+
+// Supprimer un contact (accessible uniquement aux guides)
+router.delete('/deleteContact/:id', authMiddleware, checkRole(['guide']), contactController.deleteContact);
+
+// Obtenir un contact par son nom (insensible à la casse)
 router.get('/contact/name/:name', contactController.getContactByName);
 
-// Tous les utilisateurs authentifiés peuvent voir les contacts
-router.get('/contacts',authMiddleware,  contactController.getAllContacts);
+// Obtenir tous les contacts (accessible uniquement aux utilisateurs authentifiés)
+router.get('/contacts', authMiddleware, contactController.getAllContacts);
+
+// Obtenir un contact spécifique par ID (accessible uniquement aux utilisateurs authentifiés)
 router.get('/contacts/:id', authMiddleware, contactController.getContactById);
+
+// Obtenir les contacts créés par un guide spécifique (basé sur l'utilisateur authentifié)
+router.get('/contacts/guide', authMiddleware, contactController.getContactsByGuide);
+
+// Obtenir des contacts selon un rôle spécifique
+router.get('/contacts/role/:role', authMiddleware, contactController.getContactsByRole);
+
 
 
 module.exports = router;
