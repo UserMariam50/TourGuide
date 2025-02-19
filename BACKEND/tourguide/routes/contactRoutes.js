@@ -7,29 +7,30 @@ const { checkRole } = require('../middlewares/checkRole');
 
 
 // Créer un contact (accessible uniquement aux guides)
-router.post('/createContact', authMiddleware, checkRole(['guide']), contactController.createContact);
+router.post('/createContact', authMiddleware, checkRole(['Guide']), contactController.createContact);
 
 // Mettre à jour un contact (accessible uniquement aux guides)
-router.put('/updateContact/:id', authMiddleware, checkRole(['guide']), contactController.updateContact);
+router.put('/updateContact/:id', authMiddleware, checkRole(['Tourist']), contactController.updateContact);
 
 // Supprimer un contact (accessible uniquement aux guides)
 router.delete('/deleteContact/:id', authMiddleware, checkRole(['guide']), contactController.deleteContact);
 
 // Obtenir un contact par son nom (insensible à la casse)
-router.get('/contact/name/:name', contactController.getContactByName);
+router.get('/getContactByName/name/:name',authMiddleware, checkRole(['guide']), contactController.getContactByName);
 
 // Obtenir tous les contacts (accessible uniquement aux utilisateurs authentifiés)
-router.get('/contacts', authMiddleware, contactController.getAllContacts);
+router.get('/getAllContacts', authMiddleware,  checkRole(['guide']),contactController.getAllContacts);
 
 // Obtenir un contact spécifique par ID (accessible uniquement aux utilisateurs authentifiés)
-router.get('/contacts/:id', authMiddleware, contactController.getContactById);
+router.get('/getContactById/:id', authMiddleware,  checkRole(['guide']),contactController.getContactById);
 
 // Obtenir les contacts créés par un guide spécifique (basé sur l'utilisateur authentifié)
-router.get('/contacts/guide', authMiddleware, contactController.getContactsByGuide);
+router.get('/getContactsByGuide/guide', authMiddleware,  checkRole(['guide']),contactController.getContactsByGuide);
 
 // Obtenir des contacts selon un rôle spécifique
-router.get('/contacts/role/:role', authMiddleware, contactController.getContactsByRole);
+router.get('/getContactsByRole/role/:role', authMiddleware,  checkRole(['guide']),contactController.getContactsByRole);
 
+router.get('/getContactsByNamePlus/name/:name',  authMiddleware,  checkRole(['guide']),contactController.getContactsByNamePlus);
 
 
 module.exports = router;

@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     phone: { type: String, required: true },
     image_user: { type: String, default: "user.png" },
-    role: { type: String, enum: ['visiteur', 'touriste', 'guide', 'superAdmin'], default: 'visiteur' }
+    role: { type: String, enum: ['visiteur', 'Tourist', 'Guide', 'SuperAdmin'], default: 'visiteur' }
   },
   {
     timestamps: true,

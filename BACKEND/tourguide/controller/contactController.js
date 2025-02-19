@@ -1,16 +1,39 @@
 const Contact = require('../models/contactSchema');
 
-// Créer un contact
+// // Créer un contact
+
+// module.exports.createContact = async (req, res) => {
+//   try {
+//     const contact = new Contact(req.body);
+//     await contact.save();
+//     res.status(201).json(contact);
+//   } catch (error) {
+//     console.error(error); // Ajouter un log pour mieux suivre les erreurs côté serveur
+//     res.status(400).json({ message: "Erreur lors de la création du contact", error: error.message });
+//   }
+// };
+
 module.exports.createContact = async (req, res) => {
   try {
-    const contact = new Contact(req.body);
-    await contact.save();
-    res.status(201).json(contact);
+    // Vérifier que l'utilisateur est bien authentifié
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ message: "Utilisateur non authentifié" });
+    }
+
+    // Ajouter `createdBy` avec l'ID de l'utilisateur authentifié
+    const newContact = new Contact({
+      ...req.body, // Récupère les autres champs du corps de la requête
+      createdBy: req.user.userId, // Ajoute automatiquement l'ID de l'utilisateur connecté
+    });
+
+    await newContact.save();
+    res.status(201).json({ message: "Contact créé avec succès", contact: newContact });
   } catch (error) {
-    console.error(error); // Ajouter un log pour mieux suivre les erreurs côté serveur
+    console.error("Erreur lors de la création du contact:", error);
     res.status(400).json({ message: "Erreur lors de la création du contact", error: error.message });
   }
 };
+
 
 // Obtenir tous les contacts
 module.exports.getAllContacts = async (req, res) => {
@@ -85,6 +108,28 @@ module.exports.getContactByName = async (req, res) => {
       res.status(500).json({ message: "Erreur lors de la recherche du contact", error: error.message });
     }
   };
+
+  module.exports.getContactsByNamePlus = async (req, res) => {
+    try {
+        const name = req.params.name.trim(); // Récupérer et nettoyer le nom
+
+        // Rechercher tous les contacts dont le nom contient `name` (insensible à la casse)
+        const contacts = await Contact.find({
+            name: { $regex: name, $options: "i" }
+        });
+
+        // Si aucun contact n'est trouvé
+        if (contacts.length === 0) {
+            return res.status(404).json({ message: "Aucun contact trouvé" });
+        }
+
+        res.status(200).json(contacts);
+    } catch (error) {
+        console.error("Erreur lors de la recherche des contacts:", error);
+        res.status(500).json({ message: "Erreur serveur", error: error.message });
+    }
+};
+
   
   // Obtenir des contacts par rôle
 module.exports.getContactsByRole = async (req, res) => {
