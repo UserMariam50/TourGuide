@@ -7,12 +7,12 @@ const { checkRole } = require('../middlewares/checkRole');
 
 
 // Routes CRUD pour les touristes
-router.get("/getAllTouristes", authMiddleware,touristController.getAllTouristes);
-router.get("/getTouristeById/:id", touristController.getTouristeById);
-router.post("/createTouriste", touristController.createTouriste);
+router.get("/getAllTourists", touristController.getAllTourists);
+router.get("/getTouristById/:id", touristController.getTouristById);
+router.post("/createTourist", touristController.createTourist);
 
-router.put("/updateTouriste/:id", touristController.updateTouriste);
-router.delete("/deleteTouriste/:id", touristController.deleteTouriste);
+router.put("/updateTourist/:id",authMiddleware, touristController.updateTourist);
+router.delete("/deleteTourist/:id",authMiddleware, touristController.deleteTourist);
 
 module.exports = router;
 
