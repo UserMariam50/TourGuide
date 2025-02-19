@@ -15,13 +15,15 @@ console.log(process.env.URL_MONGO);
 const {connectToMongoDB} = require("./db/db");
 //connectToMongoDB();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var osRouter = require('./routes/osRouter');
-var contactRoutes = require('./routes/contactRoutes');
-var authRouter  = require('./routes/authRouter');
-var  touristRouter = require('./routes/touristRouter');
-var  guideRouter = require('./routes/guideRouter');
+const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const osRouter = require('./routes/osRouter');
+const contactRoutes = require('./routes/contactRoutes');
+const authRouter  = require('./routes/authRouter');
+const  touristRouter = require('./routes/touristRouter');
+const  guideRouter = require('./routes/guideRouter');
 
 
 var app = express();
@@ -40,20 +42,16 @@ app.use('/apiauth', authRouter);
 app.use('/apitourist', touristRouter);
 app.use('/apiguide', guideRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
 
-// error handler
-app.use(function(err, req, res, next) {
-  // Si c'est une API, renvoie une réponse JSON
-  res.status(err.status || 500).json({
-    message: err.message,
-    error: req.app.get('env') === 'development' ? err : {}
-  });
-});
+
+
+//  gérer les erreurs 404
+app.use(notFoundHandler);
+
+//  gérer les autres erreurs
+app.use(errorHandler);
+
 
 // // error handler
 // app.use(function(err, req, res, next) {

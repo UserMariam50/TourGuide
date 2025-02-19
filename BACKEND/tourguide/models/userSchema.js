@@ -5,14 +5,17 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, unique: true, trim: true },
-    email: { type: String, required: true, unique: true, trim: true 
-  ,match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Veuillez entrer un email valide']},
+    email: {
+      type: String, required: true, unique: true, trim: true
+      , match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Veuillez entrer un email valide']
+    },
     password: { type: String, required: true },
     phone: { type: String, required: true },
     image_user: { type: String, default: "user.png" },
-    role: { type: String, enum: ['visiteur','touriste', 'guide', 'superAdmin'], default: 'visiteur' }
+    role: { type: String, enum: ['visiteur', 'touriste', 'guide', 'superAdmin'], default: 'visiteur' }
   },
-  { timestamps: true ,
+  {
+    timestamps: true,
     discriminatorKey: 'role' //  Clé pour gérer l’héritage 
   }
 );
