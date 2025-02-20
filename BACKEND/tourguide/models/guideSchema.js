@@ -10,7 +10,7 @@ const guideSchema = new mongoose.Schema({// Liste des tours anciens
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Tour'
     }],
-    tourState: {
+    guideState: {
       type: String,
       enum: ['active', 'inactive']
     },
@@ -46,7 +46,7 @@ const guideSchema = new mongoose.Schema({// Liste des tours anciens
     // Liste des ressources 
     resources: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Ressource'
+      ref: 'Resource'
     }],
     // Liste des contacts 
     contacts: [{

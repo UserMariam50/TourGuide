@@ -1,5 +1,5 @@
 const Contact = require('../models/contactSchema');
-
+const Guide = require('../models/guideSchema');
 // // Créer un contact
 
 // module.exports.createContact = async (req, res) => {
@@ -12,27 +12,49 @@ const Contact = require('../models/contactSchema');
 //     res.status(400).json({ message: "Erreur lors de la création du contact", error: error.message });
 //   }
 // };
-
 module.exports.createContact = async (req, res) => {
   try {
-    // Vérifier que l'utilisateur est bien authentifié
-    if (!req.user || !req.user.userId) {
-      return res.status(401).json({ message: "Utilisateur non authentifié" });
-    }
+      // Vérifier que l'utilisateur est authentifié
+      if (!req.user || !req.user.userId) {
+          return res.status(401).json({ message: "Utilisateur non authentifié" });
+      }
 
-    // Ajouter `createdBy` avec l'ID de l'utilisateur authentifié
-    const newContact = new Contact({
-      ...req.body, // Récupère les autres champs du corps de la requête
-      createdBy: req.user.userId, // Ajoute automatiquement l'ID de l'utilisateur connecté
-    });
+      // Vérifier si le contact existe déjà pour CE guide
+      const existingContact = await Contact.findOne({
+          email: req.body.email,
+          createdBy: req.user.userId  // Vérifie uniquement pour CE guide
+      });
 
-    await newContact.save();
-    res.status(201).json({ message: "Contact créé avec succès", contact: newContact });
+      if (existingContact) {
+          return res.status(400).json({ message: "Ce contact existe déjà pour ce guide." });
+      }
+
+      // Créer le contact
+      const newContact = new Contact({
+          ...req.body,
+          createdBy: req.user.userId, 
+      });
+
+      await newContact.save();
+
+      // Ajouter ce contact à la liste des contacts du guide
+      const guide = await Guide.findById(req.user.userId);
+      if (!guide) {
+          return res.status(404).json({ message: 'Guide non trouvé' });
+      }
+
+      guide.contacts.push(newContact._id);
+      await guide.save(); // Sauvegarde du guide mis à jour
+
+      res.status(201).json({ message: 'Contact créé avec succès', contact: newContact });
+
   } catch (error) {
-    console.error("Erreur lors de la création du contact:", error);
-    res.status(400).json({ message: "Erreur lors de la création du contact", error: error.message });
+      console.error("Erreur lors de la création du contact:", error);
+      res.status(500).json({ message: 'Erreur lors de la création du contact', error });
   }
 };
+
+
 
 
 // Obtenir tous les contacts
