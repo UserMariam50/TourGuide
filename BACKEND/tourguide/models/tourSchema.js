@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const User = require('./userSchema');  // Importer le modèle de base User
 const Resource = require('./resourceSchema');  
 const Contact = require('./contactSchema');  
-const condition = require('./conditionSchema');
+const Condition = require('./conditionSchema');
 const Comment = require('./commentSchema');
 const place = require('./placeSchema');
 const totalcost = require('./totalcostSchema');
@@ -41,7 +41,7 @@ const tourSchema = new mongoose.Schema({
   },
   conditions: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'condition',  // Référence au modèle Condition
+    ref: 'Condition',  // Référence au modèle Condition
   }],
   totalcost: [{
     type: mongoose.Schema.Types.ObjectId,

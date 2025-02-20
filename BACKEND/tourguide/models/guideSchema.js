@@ -58,8 +58,13 @@ const guideSchema = new mongoose.Schema({// Liste des tours anciens
       type: mongoose.Schema.Types.ObjectId,
       ref: 'partner'
     }],
-    // Nouveau tour a vérifier
-    newTour: {
+    
+    Tourdone: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Tour'
+    },
+  
+    Tourprogrammed: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Tour'
     }

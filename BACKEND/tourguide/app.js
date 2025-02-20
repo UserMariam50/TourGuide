@@ -20,10 +20,12 @@ const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const osRouter = require('./routes/osRouter');
-const contactRoutes = require('./routes/contactRoutes');
+const contactRouter = require('./routes/contactRouter');
 const authRouter  = require('./routes/authRouter');
 const  touristRouter = require('./routes/touristRouter');
 const  guideRouter = require('./routes/guideRouter');
+const  superAdmin = require('./routes/superAdminRouter');
+const  tour = require('./routes/tourRouter');
 
 
 var app = express();
@@ -37,12 +39,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/os', osRouter);
-app.use('/apicontact', contactRoutes);
+app.use('/apicontact', contactRouter);
 app.use('/apiauth', authRouter);
 app.use('/apitourist', touristRouter);
 app.use('/apiguide', guideRouter);
-
-
+app.use('/apiguide', guideRouter);
+app.use('/apisuperadmin', superAdmin);
+app.use('/apitour', tour);
 
 
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('./User');  // Importer le modèle de base User
+const User = require('./userSchema'); 
 
 const superAdminSchema = new mongoose.Schema({
   permissions: {

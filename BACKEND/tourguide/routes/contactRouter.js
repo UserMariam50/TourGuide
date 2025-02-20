@@ -24,13 +24,13 @@ router.get('/getAllContacts', authMiddleware,  checkRole(['Guide']),contactContr
 // Obtenir un contact spécifique par ID (accessible uniquement aux utilisateurs authentifiés)
 router.get('/getContactById/:id', authMiddleware,  checkRole(['Guide']),contactController.getContactById);
 
-// Obtenir les contacts créés par un guide spécifique (basé sur l'utilisateur authentifié)
-router.get('/getContactsByGuide/guide', authMiddleware,  checkRole(['Guide']),contactController.getContactsByGuide);
-
 // Obtenir des contacts selon un rôle spécifique
 router.get('/getContactsByRole/role/:role', authMiddleware,  checkRole(['Guide']),contactController.getContactsByRole);
 
 router.get('/getContactsByNamePlus/name/:name',  authMiddleware,  checkRole(['Guide']),contactController.getContactsByNamePlus);
 
+
+// Obtenir les contacts créés par un guide spécifique (basé sur l'utilisateur authentifié)
+//router.get('/getContactsByGuide/:id', authMiddleware,  checkRole(['Guide']),contactController.getContactsByGuide);
 
 module.exports = router;
